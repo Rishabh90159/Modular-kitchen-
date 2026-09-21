@@ -1,103 +1,1231 @@
-import React, { useEffect, useState } from 'react'
-import { createRoot } from 'react-dom/client'
-import { ArrowUpRight, ChevronDown, ChevronRight, Menu, Phone, X } from 'lucide-react'
-import './styles.css'
+import React, { useEffect, useState } from "react";
+import { createRoot } from "react-dom/client";
+import {
+  ArrowUpRight,
+  ChevronDown,
+  ChevronRight,
+  Menu,
+  Phone,
+  X,
+} from "lucide-react";
+import "./styles.css";
 
-const image = (id, width = 1200) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=85`
+const image = (id, width = 1200) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=85`;
 
 const images = {
-  hero: image('photo-1600607687920-4e2a09cf159d'),
-  kitchen: image('photo-1556911220-e15b29be8c8f'),
-  kitchenTwo: image('photo-1600566753086-00f18fb6b3ea'),
-  wardrobe: image('photo-1616486338812-3dadae4b4ace'),
-  living: image('photo-1618221195710-dd6b41faaea6'),
-  detail: image('photo-1600607687939-ce8a6c25118c'),
-  material: image('photo-1586023492125-27b2c045efd7'),
-  craft: image('photo-1615529182904-14819c35db37'),
-  bedroom: image('photo-1617104678098-de229db51175'),
-}
+  hero: image("photo-1600607687920-4e2a09cf159d"),
+  kitchen: image("photo-1556911220-e15b29be8c8f"),
+  kitchenTwo: image("photo-1600566753086-00f18fb6b3ea"),
+  wardrobe: image("photo-1616486338812-3dadae4b4ace"),
+  living: image("photo-1618221195710-dd6b41faaea6"),
+  detail: image("photo-1600607687939-ce8a6c25118c"),
+  material: image("photo-1586023492125-27b2c045efd7"),
+  craft: image("photo-1615529182904-14819c35db37"),
+  bedroom: image("photo-1617104678098-de229db51175"),
+};
 
 const navItems = [
-  ['Kitchens', '/kitchens'], ['Wardrobes', '/wardrobes'], ['Custom Furniture', '/custom-furniture'],
-  ['Projects', '/projects'], ['About', '/about'], ['Contact', '/contact'],
-]
+  ["Kitchens", "/kitchens"],
+  ["Wardrobes", "/wardrobes"],
+  ["Custom Furniture", "/custom-furniture"],
+  ["Projects", "/projects"],
+  ["About", "/about"],
+  ["Contact", "/contact"],
+];
 
 const projects = [
-  { name: 'The Quiet Residence', type: 'Kitchen + Living', location: 'Bengaluru', image: images.kitchen, tone: 'Warm oak, soft grey and considered storage.' },
-  { name: 'House of Light', type: 'Wardrobe', location: 'Mumbai', image: images.wardrobe, tone: 'A calm dressing room with a precise internal rhythm.' },
-  { name: 'The Entertainer’s Kitchen', type: 'Modular Kitchen', location: 'Hyderabad', image: images.kitchenTwo, tone: 'An open kitchen planned for everyday hosting.' },
-  { name: 'A Study in Balance', type: 'Custom Furniture', location: 'Pune', image: images.living, tone: 'Quiet joinery and integrated living room storage.' },
-  { name: 'Cedar Apartment', type: 'Bedroom + Storage', location: 'Chennai', image: images.bedroom, tone: 'A restrained palette with generous concealed storage.' },
-  { name: 'Material Residence', type: 'Complete Interior', location: 'Delhi NCR', image: images.detail, tone: 'Tactile finishes bring warmth to a clean-lined home.' },
-]
+  {
+    name: "The Quiet Residence",
+    type: "Kitchen + Living",
+    location: "Bengaluru",
+    image: images.kitchen,
+    tone: "Warm oak, soft grey and considered storage.",
+  },
+  {
+    name: "House of Light",
+    type: "Wardrobe",
+    location: "Mumbai",
+    image: images.wardrobe,
+    tone: "A calm dressing room with a precise internal rhythm.",
+  },
+  {
+    name: "The Entertainer’s Kitchen",
+    type: "Modular Kitchen",
+    location: "Hyderabad",
+    image: images.kitchenTwo,
+    tone: "An open kitchen planned for everyday hosting.",
+  },
+  {
+    name: "A Study in Balance",
+    type: "Custom Furniture",
+    location: "Pune",
+    image: images.living,
+    tone: "Quiet joinery and integrated living room storage.",
+  },
+  {
+    name: "Cedar Apartment",
+    type: "Bedroom + Storage",
+    location: "Chennai",
+    image: images.bedroom,
+    tone: "A restrained palette with generous concealed storage.",
+  },
+  {
+    name: "Material Residence",
+    type: "Complete Interior",
+    location: "Delhi NCR",
+    image: images.detail,
+    tone: "Tactile finishes bring warmth to a clean-lined home.",
+  },
+];
 
 const categoryData = [
-  { title: 'Modular Kitchens', slug: 'kitchens', image: images.kitchen, text: 'Everyday kitchens planned around movement, storage and the way you cook.' },
-  { title: 'Wardrobes', slug: 'wardrobes', image: images.wardrobe, text: 'Quiet, capable storage with internal layouts that make mornings easier.' },
-  { title: 'Custom Furniture', slug: 'custom-furniture', image: images.living, text: 'Built-in pieces that give the rest of your home a sense of order.' },
-  { title: 'Storage Solutions', slug: 'projects', image: images.craft, text: 'From compact corners to complete walls, every dimension has a job.' },
-]
+  {
+    title: "Modular Kitchens",
+    slug: "kitchens",
+    image: images.kitchen,
+    text: "Everyday kitchens planned around movement, storage and the way you cook.",
+  },
+  {
+    title: "Wardrobes",
+    slug: "wardrobes",
+    image: images.wardrobe,
+    text: "Quiet, capable storage with internal layouts that make mornings easier.",
+  },
+  {
+    title: "Custom Furniture",
+    slug: "custom-furniture",
+    image: images.living,
+    text: "Built-in pieces that give the rest of your home a sense of order.",
+  },
+  {
+    title: "Storage Solutions",
+    slug: "projects",
+    image: images.craft,
+    text: "From compact corners to complete walls, every dimension has a job.",
+  },
+];
 
 function navigate(path) {
-  window.history.pushState({}, '', path)
-  window.dispatchEvent(new PopStateEvent('popstate'))
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  window.history.pushState({}, "", path);
+  window.dispatchEvent(new PopStateEvent("popstate"));
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function AppLink({ href, children, className = '', onClick }) {
-  return <a className={className} href={href} onClick={(e) => { e.preventDefault(); navigate(href); onClick?.() }}>{children}</a>
+function AppLink({ href, children, className = "", onClick }) {
+  return (
+    <a
+      className={className}
+      href={href}
+      onClick={(e) => {
+        e.preventDefault();
+        navigate(href);
+        onClick?.();
+      }}
+    >
+      {children}
+    </a>
+  );
 }
 
 function Header() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  return <header className="site-header">
-    <div className="header-inner">
-      <AppLink href="/" className="brand-mark" onClick={() => setMenuOpen(false)}>
-        <span className="brand-symbol">S</span><span><strong>SENSE</strong><small>MODULAR KITCHEN & WARDROBE</small></span>
-      </AppLink>
-      <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`}>
-        {navItems.map(([label, href]) => <AppLink key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</AppLink>)}
-        <AppLink href="/contact" className="header-cta" onClick={() => setMenuOpen(false)}>Get a Quote <ArrowUpRight size={15} /></AppLink>
-      </nav>
-      <button className="menu-toggle" aria-label={menuOpen ? 'Close menu' : 'Open menu'} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={22} /> : <Menu size={22} />}</button>
-    </div>
-  </header>
+  const [menuOpen, setMenuOpen] = useState(false);
+  return (
+    <header className="site-header">
+      <div className="header-inner">
+        <AppLink
+          href="/"
+          className="brand-mark"
+          onClick={() => setMenuOpen(false)}
+        >
+          <span className="brand-symbol">S</span>
+          <span>
+            <strong>SENSE</strong>
+            <small>MODULAR KITCHEN & WARDROBE</small>
+          </span>
+        </AppLink>
+        <nav className={`main-nav ${menuOpen ? "is-open" : ""}`}>
+          {navItems.map(([label, href]) => (
+            <AppLink key={href} href={href} onClick={() => setMenuOpen(false)}>
+              {label}
+            </AppLink>
+          ))}
+          <AppLink
+            href="/contact"
+            className="header-cta"
+            onClick={() => setMenuOpen(false)}
+          >
+            Get a Quote <ArrowUpRight size={15} />
+          </AppLink>
+        </nav>
+        <button
+          className="menu-toggle"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </div>
+    </header>
+  );
 }
 
-function MobileBar() { return <div className="mobile-bar"><a href="tel:0000000000"><Phone size={16} /> Call</a><a href="https://wa.me/0000000000"><span className="wa-dot">W</span> WhatsApp</a><AppLink href="/contact" className="bar-quote">Get a Quote</AppLink></div> }
+function MobileBar() {
+  return (
+    <div className="mobile-bar">
+      <a href="tel:0000000000">
+        <Phone size={16} /> Call
+      </a>
+      <a href="https://wa.me/0000000000">
+        <span className="wa-dot">W</span> WhatsApp
+      </a>
+      <AppLink href="/contact" className="bar-quote">
+        Get a Quote
+      </AppLink>
+    </div>
+  );
+}
 
-function Footer() { return <footer className="footer"><div className="footer-top"><div className="footer-brand"><span className="brand-symbol">S</span><div><strong>SENSE</strong><p>Modular Kitchen & Wardrobe</p></div><p className="footer-note">Spaces planned with care, made for real routines.</p></div><div className="footer-links"><div><span className="eyebrow">Explore</span><AppLink href="/kitchens">Kitchens</AppLink><AppLink href="/wardrobes">Wardrobes</AppLink><AppLink href="/custom-furniture">Custom Furniture</AppLink><AppLink href="/projects">Projects</AppLink></div><div><span className="eyebrow">Company</span><AppLink href="/about">About SENSE</AppLink><AppLink href="/contact">Contact</AppLink><a href="https://instagram.com">Instagram</a></div><div><span className="eyebrow">Connect</span><a href="tel:0000000000">+91 00000 00000</a><a href="mailto:hello@senseinteriors.example">hello@senseinteriors.example</a><span className="muted">Your city, India</span></div></div></div><div className="footer-bottom"><span>© 2026 SENSE Modular Kitchen & Wardrobe</span><span>Designed for considered living</span></div></footer> }
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="footer-top">
+        <div className="footer-brand">
+          <span className="brand-symbol">S</span>
+          <div>
+            <strong>SENSE</strong>
+            <p>Modular Kitchen & Wardrobe</p>
+          </div>
+          <p className="footer-note">
+            Spaces planned with care, made for real routines.
+          </p>
+        </div>
+        <div className="footer-links">
+          <div>
+            <span className="eyebrow">Explore</span>
+            <AppLink href="/kitchens">Kitchens</AppLink>
+            <AppLink href="/wardrobes">Wardrobes</AppLink>
+            <AppLink href="/custom-furniture">Custom Furniture</AppLink>
+            <AppLink href="/projects">Projects</AppLink>
+          </div>
+          <div>
+            <span className="eyebrow">Company</span>
+            <AppLink href="/about">About SENSE</AppLink>
+            <AppLink href="/contact">Contact</AppLink>
+            <a href="https://instagram.com">Instagram</a>
+          </div>
+          <div>
+            <span className="eyebrow">Connect</span>
+            <a href="tel:0000000000">+91 00000 00000</a>
+            <a href="mailto:hello@senseinteriors.example">
+              hello@senseinteriors.example
+            </a>
+            <span className="muted">Your city, India</span>
+          </div>
+        </div>
+      </div>
+      <div className="footer-bottom">
+        <span>© 2026 SENSE Modular Kitchen & Wardrobe</span>
+        <span>Designed for considered living</span>
+      </div>
+    </footer>
+  );
+}
 
-function SectionIntro({ eyebrow, title, text, align = 'left' }) { return <div className={`section-intro ${align}`}><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{text && <p>{text}</p>}</div> }
-function Button({ href = '/contact', children, dark = false }) { return <AppLink href={href} className={`button ${dark ? 'button-dark' : ''}`}>{children}<ArrowUpRight size={16} /></AppLink> }
-function ImageTile({ src, alt, className = '' }) { return <div className={`image-tile ${className}`}><img src={src} alt={alt} loading="lazy" /></div> }
+function SectionIntro({ eyebrow, title, text, align = "left" }) {
+  return (
+    <div className={`section-intro ${align}`}>
+      <span className="eyebrow">{eyebrow}</span>
+      <h2>{title}</h2>
+      {text && <p>{text}</p>}
+    </div>
+  );
+}
+function Button({ href = "/contact", children, dark = false }) {
+  return (
+    <AppLink href={href} className={`button ${dark ? "button-dark" : ""}`}>
+      {children}
+      <ArrowUpRight size={16} />
+    </AppLink>
+  );
+}
+function ImageTile({ src, alt, className = "" }) {
+  return (
+    <div className={`image-tile ${className}`}>
+      <img src={src} alt={alt} loading="lazy" />
+    </div>
+  );
+}
 
-function Home() { return <>
-  <main>
-    <section className="hero hero-home"><div className="hero-image"><img src={images.hero} alt="Warm contemporary kitchen opening onto a residential living space" /></div><div className="hero-overlay"><div className="hero-kicker">SENSE / RESIDENTIAL INTERIORS</div><h1>Spaces designed<br /><em>around the way you live.</em></h1><p>Premium modular kitchens, wardrobes and customized furniture crafted around your space, lifestyle and everyday needs.</p><div className="hero-actions"><Button>Start Your Project</Button><Button href="/projects" dark>View Our Work</Button></div></div><div className="hero-caption"><span>01 — 04</span><span>Designed in India / Made for living</span></div></section>
-  <section className="intro-band"><div className="intro-number">01</div><SectionIntro eyebrow="The SENSE approach" title="Thoughtfully designed. Precisely executed." text="SENSE works across modular kitchens, wardrobes and customized furniture with an attention to materials, finishes, storage and the small functional details that make a home feel considered." /><div className="intro-aside"><span className="line"></span><p>Good design is not only what you see. It is how naturally everything works.</p><AppLink href="/about" className="text-link">Meet SENSE <ChevronRight size={15} /></AppLink></div></section>
-  <section className="category-section page-pad"><SectionIntro eyebrow="What we make" title="Furniture with a place in the plan." text="A considered collection of spaces, surfaces and storage for the rooms you use every day." /><div className="category-grid">{categoryData.map((cat, i) => <AppLink key={cat.slug} href={`/${cat.slug}`} className={`category-card category-${i + 1}`}><ImageTile src={cat.image} alt={cat.title} /><div className="category-meta"><span>0{i + 1}</span><h3>{cat.title}</h3><p>{cat.text}</p><span className="text-link">Explore <ArrowUpRight size={15} /></span></div></AppLink>)}</div></section>
-  <section className="projects-feature page-pad"><div className="feature-head"><SectionIntro eyebrow="Selected work" title="A closer look at the details." text="Projects shaped by the architecture around them, not placed on top of it." /><AppLink href="/projects" className="text-link">See all projects <ArrowUpRight size={15} /></AppLink></div><div className="project-mosaic"><AppLink href="/projects/the-quiet-residence" className="project-large"><ImageTile src={projects[0].image} alt={projects[0].name} /><div className="project-label"><span>{projects[0].location} / {projects[0].type}</span><h3>{projects[0].name}</h3></div></AppLink><AppLink href="/projects/house-of-light" className="project-small"><ImageTile src={projects[1].image} alt={projects[1].name} /><div className="project-label"><span>{projects[1].location} / {projects[1].type}</span><h3>{projects[1].name}</h3></div></AppLink></div></section>
-  <section className="materials-section"><div className="materials-image"><img src={images.material} alt="Close-up of a warm wood and stone interior material palette" loading="lazy" /></div><div className="materials-copy"><span className="eyebrow">Material language</span><h2>Surface is only the beginning.</h2><p>We help you find a material palette that feels right in the room and holds up to the way you use it.</p><div className="material-list"><span>Acrylic</span><span>Laminate</span><span>Veneer</span><span>PU finishes</span><span>Glass</span><span>Premium hardware</span></div><AppLink href="/kitchens" className="text-link">Explore materials <ArrowUpRight size={15} /></AppLink></div></section>
-  <section className="blum-section page-pad"><div className="blum-copy"><span className="eyebrow">Inside the cabinet</span><h2>Small movements.<br /><em>Better everyday living.</em></h2><p>We specify storage systems and hardware around the way a space is used, including soft-close drawers, tandem drawers, lift systems, corner solutions and internal organizers.</p><Button href="/kitchens">See storage solutions</Button></div><div className="blum-image"><ImageTile src={images.craft} alt="Detailed timber drawer joinery and storage" /></div></section>
-  <section className="process-section page-pad"><SectionIntro eyebrow="How it comes together" title="A clear process from first conversation to final fit." /><div className="process-grid">{[['01','Consultation','We listen to your routines, requirements and the architecture of your home.'],['02','Measurement','Every plan starts with accurate dimensions and a clear understanding of the site.'],['03','Design','Layouts, finishes and storage are brought together in a practical proposal.'],['04','Material selection','Choose the palette, hardware and details that feel right for your home.'],['05','Production','Your approved design is carefully prepared for the realities of the site.'],['06','Installation','A precise final fit, with the details checked before we hand it over.']].map(item => <div className="process-item" key={item[0]}><span>{item[0]}</span><h3>{item[1]}</h3><p>{item[2]}</p></div>)}</div></section>
-  <QuoteStrip />
-  <Faq />
- </main></> }
+function Home() {
+  return (
+    <>
+      <main>
+        <section className="hero hero-home">
+          <div className="hero-image">
+            <img
+              src={images.hero}
+              alt="Warm contemporary kitchen opening onto a residential living space"
+            />
+          </div>
+          <div className="hero-overlay">
+            <div className="hero-kicker">
+              SENSE MODULAR KITCHENS & WARDROBES
+            </div>
+            <h1>
+              Spaces designed
+              <br />
+              <em>around the way you live.</em>
+            </h1>
+            <p>
+              Modular kitchens, wardrobes and customized furniture planned
+              around your space, storage needs and everyday routines.
+            </p>
+            <div className="hero-actions">
+              <Button>Start Your Project</Button>
+              <Button href="/projects" dark>
+                View Our Work
+              </Button>
+            </div>
+          </div>
+          <div className="hero-caption">
+            <span>KITCHENS • WARDROBES • CUSTOM FURNITURE</span>
+            <span>Designed in India / Made for living</span>
+          </div>
+        </section>
+        <section className="intro-band">
+          <div className="intro-number">01</div>
+          <SectionIntro
+            eyebrow="The SENSE approach"
+            title="Thoughtfully planned. Precisely executed."
+            text="Every home has different dimensions, routines and storage requirements. At SENSE, we plan furniture around the way your space is actually used — from kitchen workflows and wardrobe organization to the details that make everyday storage easier. Our approach brings together space planning, materials, finishes, hardware and practical storage solutions to create furniture that works as well as it looks."
+          />
+          <div className="intro-aside">
+            <span className="line"></span>
+            <p>
+              Good design is not only what you see. It is how naturally
+              everything works.
+            </p>
+            <AppLink href="/about" className="text-link">
+              Meet SENSE <ChevronRight size={15} />
+            </AppLink>
+          </div>
+        </section>
+        <section className="category-section page-pad">
+          <SectionIntro
+            eyebrow="What we design"
+            title="Furniture with a place in the plan."
+            text="A considered collection of spaces, surfaces and storage for the rooms you use every day."
+          />
+          <div className="category-grid">
+            {categoryData.map((cat, i) => (
+              <AppLink
+                key={cat.slug}
+                href={`/${cat.slug}`}
+                className={`category-card category-${i + 1}`}
+              >
+                <ImageTile src={cat.image} alt={cat.title} />
+                <div className="category-meta">
+                  <span>0{i + 1}</span>
+                  <h3>{cat.title}</h3>
+                  <p>{cat.text}</p>
+                  <span className="text-link">
+                    Explore <ArrowUpRight size={15} />
+                  </span>
+                </div>
+              </AppLink>
+            ))}
+          </div>
+        </section>
+        <section className="projects-feature page-pad">
+          <div className="feature-head">
+            <SectionIntro
+              eyebrow="Selected work"
+              title="A closer look at the details."
+              text="Projects shaped by the architecture around them, not placed on top of it."
+            />
+            <AppLink href="/projects" className="text-link">
+              See all projects <ArrowUpRight size={15} />
+            </AppLink>
+          </div>
+          <div className="project-mosaic">
+            <AppLink
+              href="/projects/the-quiet-residence"
+              className="project-large"
+            >
+              <ImageTile src={projects[0].image} alt={projects[0].name} />
+              <div className="project-label">
+                <span>
+                  {projects[0].location} / {projects[0].type}
+                </span>
+                <h3>{projects[0].name}</h3>
+              </div>
+            </AppLink>
+            <AppLink href="/projects/house-of-light" className="project-small">
+              <ImageTile src={projects[1].image} alt={projects[1].name} />
+              <div className="project-label">
+                <span>
+                  {projects[1].location} / {projects[1].type}
+                </span>
+                <h3>{projects[1].name}</h3>
+              </div>
+            </AppLink>
+          </div>
+        </section>
+        <section className="materials-section">
+          <div className="materials-image">
+            <img
+              src={images.material}
+              alt="Close-up of a warm wood and stone interior material palette"
+              loading="lazy"
+            />
+          </div>
+          <div className="materials-copy">
+            <span className="eyebrow">Material language</span>
+            <h2>Surface is only the beginning.</h2>
+            <p>
+              We help you find a material palette that feels right in the room
+              and holds up to the way you use it.
+            </p>
+            <div className="material-list">
+              <span>Acrylic</span>
+              <span>Laminate</span>
+              <span>Veneer</span>
+              <span>PU finishes</span>
+              <span>Glass</span>
+              <span>Premium hardware</span>
+            </div>
+            <AppLink href="/kitchens" className="text-link">
+              Explore materials <ArrowUpRight size={15} />
+            </AppLink>
+          </div>
+        </section>
+        <section className="blum-section page-pad">
+          <div className="blum-copy">
+            <span className="eyebrow">Inside the cabinet</span>
+            <h2>
+              Small movements.
+              <br />
+              <em>Better everyday living.</em>
+            </h2>
+            <p>
+              We specify storage systems and hardware around the way a space is
+              used, including soft-close drawers, tandem drawers, lift systems,
+              corner solutions and internal organizers.
+            </p>
+            <Button href="/kitchens">See storage solutions</Button>
+          </div>
+          <div className="blum-image">
+            <ImageTile
+              src={images.craft}
+              alt="Detailed timber drawer joinery and storage"
+            />
+          </div>
+        </section>
+        <section className="process-section page-pad">
+          <SectionIntro
+            eyebrow="How it comes together"
+            title="A clear process from first conversation to final fit."
+          />
+          <div className="process-grid">
+            {[
+              [
+                "01",
+                "Consultation",
+                "We listen to your routines, requirements and the architecture of your home.",
+              ],
+              [
+                "02",
+                "Measurement",
+                "Every plan starts with accurate dimensions and a clear understanding of the site.",
+              ],
+              [
+                "03",
+                "Design",
+                "Layouts, finishes and storage are brought together in a practical proposal.",
+              ],
+              [
+                "04",
+                "Material selection",
+                "Choose the palette, hardware and details that feel right for your home.",
+              ],
+              [
+                "05",
+                "Production",
+                "Your approved design is carefully prepared for the realities of the site.",
+              ],
+              [
+                "06",
+                "Installation",
+                "A precise final fit, with the details checked before we hand it over.",
+              ],
+            ].map((item) => (
+              <div className="process-item" key={item[0]}>
+                <span>{item[0]}</span>
+                <h3>{item[1]}</h3>
+                <p>{item[2]}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+        <ClientPriorities />
+        <QuoteStrip />
+        <Faq />
+      </main>
+    </>
+  );
+}
 
-function QuoteStrip() { return <section className="quote-strip"><div><span className="eyebrow">Begin with a conversation</span><h2>Planning a new kitchen<br />or wardrobe?</h2></div><div><p>Tell us about your space, requirements and budget. Our team will get back to you with the next steps.</p><Button dark>Request a Consultation</Button></div></section> }
-function Faq() { const [open, setOpen] = useState(0); const faqs = [['How does the modular kitchen process work?','We begin with a consultation and site measurement, then develop a layout, material palette and storage plan for your approval before production and installation.'],['Can the design be customized according to my space?','Yes. Every design is developed around the dimensions, architecture and routines of your home.'],['What materials and finishes are available?','We work with acrylic, laminate, veneer, PU finishes, glass, wood finishes and a considered range of hardware and internal storage systems.'],['Do you provide measurement and installation?','Measurement and installation are part of our project process, coordinated around the site and the approved design.']]; return <section className="faq-section page-pad"><SectionIntro eyebrow="Questions, answered" title="A useful place to start." /><div className="faq-list">{faqs.map(([q, a], i) => <div className={`faq-item ${open === i ? 'open' : ''}`} key={q}><button onClick={() => setOpen(open === i ? -1 : i)}><span>0{i + 1}</span><strong>{q}</strong><ChevronDown size={18} /></button>{open === i && <p>{a}</p>}</div>)}</div></section> }
+function ClientPriorities() {
+  return (
+    <section className="priorities-section page-pad">
+      <div>
+        <span className="eyebrow">What clients look for</span>
+        <h2>A considered project from first conversation to final fit.</h2>
+      </div>
+      <div className="priority-list">
+        <span>Clear communication</span>
+        <span>Practical storage</span>
+        <span>Quality finishes</span>
+        <span>Attention to detail</span>
+        <span>Smooth project coordination</span>
+      </div>
+    </section>
+  );
+}
+function QuoteStrip() {
+  return (
+    <section className="quote-strip">
+      <div>
+        <span className="eyebrow">Begin with a conversation</span>
+        <h2>
+          Planning a new kitchen
+          <br />
+          or wardrobe?
+        </h2>
+      </div>
+      <div>
+        <p>
+          Tell us about your space, requirements and budget. Our team will get
+          back to you with the next steps.
+        </p>
+        <Button dark>Request a Consultation</Button>
+      </div>
+    </section>
+  );
+}
+function Faq() {
+  const [open, setOpen] = useState(0);
+  const faqs = [
+    [
+      "How does the kitchen design process work?",
+      "We begin with a consultation and site measurement, then develop the layout, storage plan and material palette for your approval before production and installation.",
+    ],
+    [
+      "Can the design be customized according to my space?",
+      "Yes. Each design is developed around the dimensions, architecture and routines of your home.",
+    ],
+    [
+      "What materials and finishes are available?",
+      "We work with acrylic, laminate, veneer, PU finishes, glass, wood finishes and a considered range of hardware and internal storage systems.",
+    ],
+    [
+      "Do you provide measurement and installation?",
+      "Measurement and installation are part of the project process, coordinated around the site and approved design.",
+    ],
+    [
+      "Can I choose different storage configurations?",
+      "Yes. Drawers, shelves, hanging sections, organizers and accessories can be planned around what you need to store.",
+    ],
+    [
+      "How can I request a quotation?",
+      "Share your project details through the enquiry form and we will use them to understand the right next step.",
+    ],
+    [
+      "Can I share my floor plan before a consultation?",
+      "Yes. Upload a floor plan or reference image with your enquiry so the initial conversation has useful context.",
+    ],
+  ];
+  return (
+    <section className="faq-section page-pad">
+      <SectionIntro
+        eyebrow="Questions, answered"
+        title="A useful place to start."
+      />
+      <div className="faq-list">
+        {faqs.map(([q, a], i) => (
+          <div className={`faq-item ${open === i ? "open" : ""}`} key={q}>
+            <button onClick={() => setOpen(open === i ? -1 : i)}>
+              <span>0{i + 1}</span>
+              <strong>{q}</strong>
+              <ChevronDown size={18} />
+            </button>
+            {open === i && <p>{a}</p>}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
-function ListingPage({ kind }) { const isKitchen = kind === 'kitchens'; const isWardrobe = kind === 'wardrobes'; const title = isKitchen ? 'Kitchens designed around your everyday.' : isWardrobe ? 'Storage that fits your space.' : 'Furniture that belongs in the room.'; const intro = isKitchen ? 'Layouts that make the work of cooking feel natural, with storage and finishes planned around the way your home is lived in.' : isWardrobe ? 'From a compact bedroom wall to a complete walk-in, we build storage around what needs to be held and how you move through the room.' : 'Custom units, built-ins and considered joinery for the moments and objects that make a home yours.'; const options = isKitchen ? [['L-shaped kitchen', images.kitchen, 'A versatile layout for open-plan homes and everyday cooking.'],['U-shaped kitchen', images.kitchenTwo, 'Generous working zones with storage on three sides.'],['Parallel kitchen', images.detail, 'A practical, efficient plan for narrower rooms.'],['Island kitchen', images.living, 'A social centre for homes that like to gather.'],['Straight kitchen', images.craft, 'A clean, compact run for apartments and studios.'],['Open kitchen', images.hero, 'A composed transition between kitchen and living.']] : isWardrobe ? [['Sliding wardrobes', images.wardrobe, 'A quiet face for rooms where every inch matters.'],['Hinged wardrobes', images.bedroom, 'Flexible, accessible storage with a familiar rhythm.'],['Walk-in wardrobes', images.craft, 'A room of its own, planned around the collection inside.'],['Customized wardrobes', images.detail, 'A storage wall shaped to your architecture and habits.']] : [['TV units', images.living, 'Integrated media and storage without visual noise.'],['Crockery units', images.detail, 'Display and concealment in a considered balance.'],['Study units', images.craft, 'A focused work surface with everything in reach.'],['Shoe storage', images.wardrobe, 'A practical first impression at the entry.'],['Vanity units', images.bedroom, 'A personal corner with a place for every essential.'],['Bar units', images.kitchenTwo, 'A compact setting for evenings at home.']]; return <main><section className="page-hero page-pad"><div><span className="eyebrow">SENSE / {isKitchen ? 'KITCHENS' : isWardrobe ? 'WARDROBES' : 'CUSTOM FURNITURE'}</span><h1>{title}</h1><p>{intro}</p><Button>Start a conversation</Button></div><ImageTile src={isKitchen ? images.kitchenTwo : isWardrobe ? images.wardrobe : images.living} alt={title} /></section><section className="option-section page-pad"><SectionIntro eyebrow={isKitchen ? 'Find your layout' : 'Explore the possibilities'} title={isKitchen ? 'A plan for the way you move.' : 'Made to work hard. Designed to sit quietly.'} text={isKitchen ? 'The right layout makes the room feel more generous. We look at movement, reach, appliances and the storage each routine needs.' : 'Every piece is resolved around the room it occupies, with useful storage and a finish that feels part of the architecture.'} /><div className={`option-grid ${options.length === 4 ? 'four' : ''}`}>{options.map((item, i) => <article className="option-card" key={item[0]}><ImageTile src={item[1]} alt={item[0]} /><div><span className="eyebrow">0{i + 1}</span><h3>{item[0]}</h3><p>{item[2]}</p><AppLink href="/contact" className="text-link">Discuss this <ArrowUpRight size={15} /></AppLink></div></article>)}</div></section><section className="detail-band"><div><span className="eyebrow">Details that matter</span><h2>{isKitchen ? 'Storage is part of the architecture.' : 'The inside deserves as much attention as the outside.'}</h2></div><div className="detail-columns"><div><h3>{isKitchen ? 'Materials & finishes' : 'Internal layouts'}</h3><p>{isKitchen ? 'Acrylic, laminate, veneer, PU finishes, glass and wood tones selected for the room, the light and the level of use.' : 'Drawers, hanging sections, shelves, accessories and lighting concepts planned around what you actually need to store.'}</p></div><div><h3>{isKitchen ? 'Hardware & storage' : 'Finishes & light'}</h3><p>{isKitchen ? 'Soft-close drawers, tandem drawers, corner solutions, lift systems and internal organizers that keep daily movement smooth.' : 'Sliding and hinged surfaces, warm woods, tactile laminates and thoughtful lighting that makes finding things easier.'}</p></div></div></section><section className="mini-gallery page-pad"><SectionIntro eyebrow="Selected work" title="See how it settles into a home." /><div className="gallery-row"><ImageTile src={images.detail} alt="Residential interior detail" /><ImageTile src={images.bedroom} alt="Contemporary bedroom storage" /><ImageTile src={images.material} alt="Interior material palette" /></div></section><QuoteStrip /></main> }
+function ListingPage({ kind }) {
+  const isKitchen = kind === "kitchens";
+  const isWardrobe = kind === "wardrobes";
+    const title = isKitchen
+      ? "Kitchens Designed Around Your Everyday"
+    : isWardrobe
+        ? "Storage That Fits Your Space."
+        : "Furniture Planned for the Details.";
+  const intro = isKitchen
+      ? "A kitchen needs to work through the busiest parts of the day. We plan layouts, storage and finishes around the available space and the way you use it."
+    : isWardrobe
+      ? "From a compact bedroom wall to a complete walk-in, we build storage around what needs to be held and how you move through the room."
+      : "Custom units, built-ins and considered joinery for the moments and objects that make a home yours.";
+  const options = isKitchen
+    ? [
+        [
+          "L-Shaped Kitchens",
+          images.kitchen,
+          "A flexible layout that works well for homes where cooking, preparation and storage need to share a compact footprint.",
+        ],
+        [
+          "U-Shaped Kitchens",
+          images.kitchenTwo,
+          "Generous working zones with storage on three sides.",
+        ],
+        [
+          "Parallel Kitchens",
+          images.detail,
+          "A practical, efficient plan for narrower rooms.",
+        ],
+        [
+          "Island Kitchens",
+          images.living,
+          "A social centre for homes that like to gather.",
+        ],
+        [
+          "Straight Kitchens",
+          images.craft,
+          "A clean, compact run for apartments and studios.",
+        ],
+        [
+          "Open Kitchens",
+          images.hero,
+          "A composed transition between kitchen and living.",
+        ],
+      ]
+    : isWardrobe
+      ? [
+          [
+            "Sliding wardrobes",
+            images.wardrobe,
+            "A quiet face for rooms where every inch matters.",
+          ],
+          [
+            "Hinged wardrobes",
+            images.bedroom,
+            "Flexible, accessible storage with a familiar rhythm.",
+          ],
+          [
+            "Walk-in wardrobes",
+            images.craft,
+            "A room of its own, planned around the collection inside.",
+          ],
+          [
+            "Customized wardrobes",
+            images.detail,
+            "A storage wall shaped to your architecture and habits.",
+          ],
+        ]
+      : [
+          [
+            "TV units",
+            images.living,
+            "Integrated media and storage without visual noise.",
+          ],
+          [
+            "Crockery units",
+            images.detail,
+            "Display and concealment in a considered balance.",
+          ],
+          [
+            "Study units",
+            images.craft,
+            "A focused work surface with everything in reach.",
+          ],
+          [
+            "Shoe storage",
+            images.wardrobe,
+            "A practical first impression at the entry.",
+          ],
+          [
+            "Vanity units",
+            images.bedroom,
+            "A personal corner with a place for every essential.",
+          ],
+          [
+            "Bar units",
+            images.kitchenTwo,
+            "A compact setting for evenings at home.",
+          ],
+        ];
+  return (
+    <main>
+      <section className="page-hero page-pad">
+        <div>
+          <span className="eyebrow">
+            SENSE /{" "}
+            {isKitchen
+              ? "KITCHENS"
+              : isWardrobe
+                ? "WARDROBES"
+                : "CUSTOM FURNITURE"}
+          </span>
+          <h1>{title}</h1>
+          <p>{intro}</p>
+          <Button>Start a conversation</Button>
+        </div>
+        <ImageTile
+          src={
+            isKitchen
+              ? images.kitchenTwo
+              : isWardrobe
+                ? images.wardrobe
+                : images.living
+          }
+          alt={title}
+        />
+      </section>
+      <section className="option-section page-pad">
+        <SectionIntro
+          eyebrow={isKitchen ? "Find your layout" : "Explore the possibilities"}
+          title={
+            isKitchen
+              ? "A plan for the way you move."
+              : "Made to work hard. Designed to sit quietly."
+          }
+          text={
+            isKitchen
+              ? "The right layout makes the room feel more generous. We look at movement, reach, appliances and the storage each routine needs."
+              : "Every piece is resolved around the room it occupies, with useful storage and a finish that feels part of the architecture."
+          }
+        />
+        <div className={`option-grid ${options.length === 4 ? "four" : ""}`}>
+          {options.map((item, i) => (
+            <article className="option-card" key={item[0]}>
+              <ImageTile src={item[1]} alt={item[0]} />
+              <div>
+                <span className="eyebrow">0{i + 1}</span>
+                <h3>{item[0]}</h3>
+                <p>{item[2]}</p>
+                <AppLink href="/contact" className="text-link">
+                  Discuss this <ArrowUpRight size={15} />
+                </AppLink>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="detail-band">
+        <div>
+          <span className="eyebrow">Details that matter</span>
+          <h2>
+            {isKitchen
+              ? "Storage is part of the architecture."
+              : "The inside deserves as much attention as the outside."}
+          </h2>
+        </div>
+        <div className="detail-columns">
+          <div>
+            <h3>{isKitchen ? "Materials & finishes" : "Internal layouts"}</h3>
+            <p>
+              {isKitchen
+                ? "Acrylic, laminate, veneer, PU finishes, glass and wood tones selected for the room, the light and the level of use."
+                : "Drawers, hanging sections, shelves, accessories and lighting concepts planned around what you actually need to store."}
+            </p>
+          </div>
+          <div>
+            <h3>{isKitchen ? "Hardware & storage" : "Finishes & light"}</h3>
+            <p>
+              {isKitchen
+                ? "Soft-close drawers, tandem drawers, corner solutions, lift systems and internal organizers that keep daily movement smooth."
+                : "Sliding and hinged surfaces, warm woods, tactile laminates and thoughtful lighting that makes finding things easier."}
+            </p>
+          </div>
+        </div>
+      </section>
+      <section className="mini-gallery page-pad">
+        <SectionIntro
+          eyebrow="Selected work"
+          title="See how it settles into a home."
+        />
+        <div className="gallery-row">
+          <ImageTile src={images.detail} alt="Residential interior detail" />
+          <ImageTile src={images.bedroom} alt="Contemporary bedroom storage" />
+          <ImageTile src={images.material} alt="Interior material palette" />
+        </div>
+      </section>
+      <QuoteStrip />
+    </main>
+  );
+}
 
-function ProjectsPage() { const [filter, setFilter] = useState('All'); const filters = ['All', 'Kitchens', 'Wardrobes', 'Living Spaces', 'Bedrooms', 'Storage', 'Customized Furniture']; const shown = filter === 'All' ? projects : projects.filter(p => p.type.toLowerCase().includes(filter.slice(0, -1).toLowerCase()) || (filter === 'Storage' && p.type.includes('Furniture'))); return <main><section className="page-hero projects-hero page-pad"><div><span className="eyebrow">SENSE / PROJECTS</span><h1>Rooms with a point of view.</h1><p>A selection of kitchens, wardrobes and custom furniture designed around the homes they belong to.</p></div><div className="project-hero-note">{projects.length.toString().padStart(2, '0')}<span>projects<br />in the edit</span></div></section><section className="project-index page-pad"><div className="filter-row">{filters.map(f => <button className={filter === f ? 'active' : ''} key={f} onClick={() => setFilter(f)}>{f}</button>)}</div><div className="project-grid">{shown.map((project, i) => <AppLink href={`/projects/${project.name.toLowerCase().replaceAll(' ', '-')}`} className={`project-card project-card-${i % 3}`} key={project.name}><ImageTile src={project.image} alt={project.name} /><div className="project-card-info"><span>{project.location} / {project.type}</span><h3>{project.name}</h3><p>{project.tone}</p><ArrowUpRight size={18} /></div></AppLink>)}</div></section></main> }
+function ProjectsPage() {
+  const [filter, setFilter] = useState("All");
+  const filters = [
+    "All",
+    "Kitchens",
+    "Wardrobes",
+    "Living Spaces",
+    "Bedrooms",
+    "Storage",
+    "Custom Furniture",
+  ];
+  const shown =
+    filter === "All"
+      ? projects
+      : projects.filter(
+          (p) =>
+            p.type.toLowerCase().includes(filter.replace(/s$/, "").toLowerCase()) ||
+            (filter === "Storage" && p.type.includes("Furniture")),
+        );
+  return (
+    <main>
+      <section className="page-hero projects-hero page-pad">
+        <div>
+          <span className="eyebrow">SENSE / PROJECTS</span>
+          <h1>Selected Projects</h1>
+          <p>
+            A selection of kitchens, wardrobes and customized furniture planned
+            for different homes and spaces.
+          </p>
+        </div>
+        <div className="project-hero-note">
+          {projects.length.toString().padStart(2, "0")}
+          <span>
+            projects
+            <br />
+            in the edit
+          </span>
+        </div>
+      </section>
+      <section className="project-index page-pad">
+        <div className="filter-row">
+          {filters.map((f) => (
+            <button
+              className={filter === f ? "active" : ""}
+              key={f}
+              onClick={() => setFilter(f)}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+        <div className="project-grid">
+          {shown.map((project, i) => (
+            <AppLink
+              href={`/projects/${project.name.toLowerCase().replaceAll(" ", "-")}`}
+              className={`project-card project-card-${i % 3}`}
+              key={project.name}
+            >
+              <ImageTile src={project.image} alt={project.name} />
+              <div className="project-card-info">
+                <span>
+                  {project.location} / {project.type}
+                </span>
+                <h3>{project.name}</h3>
+                <p>{project.tone}</p>
+                <ArrowUpRight size={18} />
+              </div>
+            </AppLink>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}
 
-function ProjectDetail() { const project = projects[0]; return <main><section className="detail-hero page-pad"><div><span className="eyebrow">{project.location} / {project.type}</span><h1>{project.name}</h1><p>A warm, quietly detailed kitchen and living space planned around the daily rhythm of a young family.</p></div><ImageTile src={project.image} alt={project.name} /></section><section className="detail-intro page-pad"><div><span className="eyebrow">The approach</span><h2>Open, tactile and easy to live with.</h2></div><div><p>The kitchen was designed as part of the larger living space, using warm oak, soft grey cabinetry and a continuous line of storage to make the room feel calm and connected.</p><div className="spec-list"><span><b>Materials</b> Veneer, laminate, quartz</span><span><b>Finishes</b> Natural oak, soft grey</span><span><b>Consideration</b> Family storage, open plan</span></div></div></section><section className="detail-gallery page-pad"><ImageTile src={images.detail} alt="Kitchen detail with warm cabinetry" className="wide" /><ImageTile src={images.craft} alt="Open shelving and timber storage" /><ImageTile src={images.living} alt="Living room connected to kitchen" /><ImageTile src={images.material} alt="Material and hardware detail" /></section><QuoteStrip /></main> }
+function ProjectDetail() {
+  const project = projects[0];
+  return (
+    <main>
+      <section className="detail-hero page-pad">
+        <div>
+          <span className="eyebrow">
+            {project.location} / {project.type}
+          </span>
+          <h1>{project.name}</h1>
+          <p>
+            A warm, quietly detailed kitchen and living space planned around the
+            daily rhythm of a young family.
+          </p>
+        </div>
+        <ImageTile src={project.image} alt={project.name} />
+      </section>
+      <section className="detail-intro page-pad">
+        <div>
+          <span className="eyebrow">The approach</span>
+          <h2>Open, tactile and easy to live with.</h2>
+        </div>
+        <div>
+          <p>
+            The kitchen was designed as part of the larger living space, using
+            warm oak, soft grey cabinetry and a continuous line of storage to
+            make the room feel calm and connected.
+          </p>
+          <div className="spec-list">
+            <span>
+              <b>Materials</b> Veneer, laminate, quartz
+            </span>
+            <span>
+              <b>Finishes</b> Natural oak, soft grey
+            </span>
+            <span>
+              <b>Consideration</b> Family storage, open plan
+            </span>
+          </div>
+        </div>
+      </section>
+      <section className="detail-gallery page-pad">
+        <ImageTile
+          src={images.detail}
+          alt="Kitchen detail with warm cabinetry"
+          className="wide"
+        />
+        <ImageTile src={images.craft} alt="Open shelving and timber storage" />
+        <ImageTile src={images.living} alt="Living room connected to kitchen" />
+        <ImageTile src={images.material} alt="Material and hardware detail" />
+      </section>
+      <QuoteStrip />
+    </main>
+  );
+}
 
-function About() { return <main><section className="page-hero about-hero page-pad"><div><span className="eyebrow">SENSE / ABOUT</span><h1>Designing for real spaces and real routines.</h1><p>We create considered kitchen, wardrobe and furniture solutions for residential interiors where every dimension and detail has a role to play.</p></div><ImageTile src={images.craft} alt="Detailed residential cabinetry and joinery" /></section><section className="about-copy page-pad"><SectionIntro eyebrow="Our point of view" title="The best room is the one that works without asking for attention." text="SENSE approaches each project as a complete interior problem: how people move, what they need to store, what the light does through the day and how materials will age with use." /><div className="about-principles">{[['01','Start with the room','Space planning begins with the existing architecture, not a catalogue of fixed answers.'],['02','Make storage useful','Internal layouts are planned around actual objects, routines and the ease of putting things away.'],['03','Choose with care','Materials and finishes are selected for the mood of a room and the work it needs to do.'],['04','Follow through','From drawing to installation, a clear project process keeps decisions visible and considered.']].map(x => <div key={x[0]}><span>{x[0]}</span><h3>{x[1]}</h3><p>{x[2]}</p></div>)}</div></section><section className="about-image-band"><img src={images.hero} alt="Light-filled kitchen and living interior" loading="lazy" /></section><QuoteStrip /></main> }
+function About() {
+  return (
+    <main>
+      <section className="page-hero about-hero page-pad">
+        <div>
+          <span className="eyebrow">SENSE / ABOUT</span>
+          <h1>Designed Around Real Homes.</h1>
+          <p>
+            SENSE focuses on modular kitchens, wardrobes and customized
+            furniture designed around the practical requirements of each home.
+            Every project starts with understanding the space, its dimensions,
+            storage requirements, routines and visual preferences.
+          </p>
+        </div>
+        <ImageTile
+          src={images.craft}
+          alt="Detailed residential cabinetry and joinery"
+        />
+      </section>
+      <section className="about-copy page-pad">
+        <SectionIntro
+          eyebrow="Our point of view"
+          title="Our Approach"
+          text="From space planning and layout to materials, finishes and internal configurations, we create solutions that fit the space rather than forcing the space to fit a standard design."
+        />
+        <div className="about-principles">
+          {[
+            [
+              "01",
+              "Understand the Space",
+              "Begin with dimensions, routines, storage requirements and the architecture already there.",
+            ],
+            [
+              "02",
+              "Plan the Layout",
+              "Develop a furniture plan that makes movement, access and everyday use feel natural.",
+            ],
+            [
+              "03",
+              "Select Materials",
+              "Choose materials, finishes, hardware and accessories that suit the room and its use.",
+            ],
+            [
+              "04",
+              "Finalize the Details",
+              "Resolve internal configurations and the details that make the finished furniture feel complete.",
+            ],
+            [
+              "05",
+              "Execute the Project",
+              "Move the approved design through production and installation with the site in mind.",
+            ],
+          ].map((x) => (
+            <div key={x[0]}>
+              <span>{x[0]}</span>
+              <h3>{x[1]}</h3>
+              <p>{x[2]}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="about-image-band">
+        <img
+          src={images.hero}
+          alt="Light-filled kitchen and living interior"
+          loading="lazy"
+        />
+      </section>
+      <QuoteStrip />
+    </main>
+  );
+}
 
-function Contact() { const [sent, setSent] = useState(false); return <main><section className="contact-layout page-pad"><div className="contact-intro"><span className="eyebrow">SENSE / CONTACT</span><h1>Let’s talk about your space.</h1><p>Share a few details about your project and we’ll come back with the right next step. A floor plan or reference image is always useful.</p><div className="contact-details"><div><span className="eyebrow">Call SENSE</span><a href="tel:0000000000">+91 00000 00000</a></div><div><span className="eyebrow">Write to us</span><a href="mailto:hello@senseinteriors.example">hello@senseinteriors.example</a></div><div><span className="eyebrow">WhatsApp</span><a href="https://wa.me/0000000000">Talk to us on WhatsApp <ArrowUpRight size={14} /></a></div></div></div><form className="enquiry-form" onSubmit={(e) => { e.preventDefault(); setSent(true) }}>{sent ? <div className="form-success"><span className="success-mark">✓</span><h2>Thank you for reaching out.</h2><p>This demo form is ready to connect to your enquiry workflow. We’ll be in touch shortly.</p><button type="button" className="text-link" onClick={() => setSent(false)}>Send another enquiry <ArrowUpRight size={15} /></button></div> : <><div className="form-heading"><span className="eyebrow">Project enquiry</span><h2>Tell us a little about what you have in mind.</h2></div><div className="form-grid"><label>Full name<input required placeholder="Your name" /></label><label>Phone number<input required type="tel" placeholder="+91" /></label><label>Email<input type="email" placeholder="you@example.com" /></label><label>City / Location<input placeholder="Where is the project?" /></label><label>Requirement<select defaultValue=""><option value="" disabled>Select one</option><option>Modular Kitchen</option><option>Wardrobe</option><option>Customized Furniture</option><option>Complete Furniture</option><option>Other</option></select></label><label>Property type<select defaultValue=""><option value="" disabled>Select one</option><option>Apartment</option><option>Villa</option><option>Independent Home</option><option>Office</option></select></label><label>Approximate area<input placeholder="For example, 1200 sq. ft." /></label><label>Budget range<select defaultValue=""><option value="" disabled>Select one</option><option>Under ₹2 Lakh</option><option>₹2–5 Lakh</option><option>₹5–10 Lakh</option><option>₹10–20 Lakh</option><option>₹20 Lakh+</option></select></label><label>Preferred timeline<select defaultValue=""><option value="" disabled>Select one</option><option>Within 1 month</option><option>1–3 months</option><option>3–6 months</option><option>Just exploring</option></select></label><label className="full">Message<textarea placeholder="Tell us about the room, your needs and what you have in mind." rows="4"></textarea></label><label className="upload full"><span>Upload floor plan / reference image</span><input type="file" accept="image/*,.pdf" /><small>PDF, JPG or PNG · Max 10 MB</small></label></div><button className="button button-dark" type="submit">Send enquiry <ArrowUpRight size={16} /></button></>}</form></section></main> }
+function Contact() {
+  const [sent, setSent] = useState(false);
+  return (
+    <main>
+      <section className="contact-layout page-pad">
+        <div className="contact-intro">
+          <span className="eyebrow">SENSE / CONTACT</span>
+          <h1>Tell Us About Your Project</h1>
+          <p>
+            Share a few details about your space and requirements. We will use
+            this information to understand your project before getting in touch.
+          </p>
+          <div className="contact-details">
+            <div>
+              <span className="eyebrow">Call SENSE</span>
+              <a href="tel:0000000000">+91 00000 00000</a>
+            </div>
+            <div>
+              <span className="eyebrow">Write to us</span>
+              <a href="mailto:hello@senseinteriors.example">
+                hello@senseinteriors.example
+              </a>
+            </div>
+            <div>
+              <span className="eyebrow">WhatsApp</span>
+              <a href="https://wa.me/0000000000">
+                Talk to us on WhatsApp <ArrowUpRight size={14} />
+              </a>
+            </div>
+          </div>
+        </div>
+        <form
+          className="enquiry-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSent(true);
+          }}
+        >
+          {sent ? (
+            <div className="form-success">
+              <span className="success-mark">✓</span>
+              <h2>Thank you for reaching out.</h2>
+              <p>
+                This demo form is ready to connect to your enquiry workflow.
+                We’ll be in touch shortly.
+              </p>
+              <button
+                type="button"
+                className="text-link"
+                onClick={() => setSent(false)}
+              >
+                Send another enquiry <ArrowUpRight size={15} />
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="form-heading">
+                <span className="eyebrow">Project enquiry</span>
+                <h2>Tell us a little about what you have in mind.</h2>
+              </div>
+              <div className="form-grid">
+                <label>
+                  Full name
+                  <input required placeholder="Your name" />
+                </label>
+                <label>
+                  Phone number
+                  <input required type="tel" placeholder="+91" />
+                </label>
+                <label>
+                  Email
+                  <input type="email" placeholder="you@example.com" />
+                </label>
+                <label>
+                  City / Location
+                  <input placeholder="Where is the project?" />
+                </label>
+                <label>
+                  Requirement
+                  <select defaultValue="">
+                    <option value="" disabled>
+                      Select one
+                    </option>
+                    <option>Modular Kitchen</option>
+                    <option>Wardrobe</option>
+                    <option>Customized Furniture</option>
+                    <option>Multiple Requirements</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label>
+                  Property type
+                  <select defaultValue="">
+                    <option value="" disabled>
+                      Select one
+                    </option>
+                    <option>Apartment</option>
+                    <option>Villa</option>
+                    <option>Independent Home</option>
+                    <option>Office</option>
+                  </select>
+                </label>
+                <label>
+                  Approximate area
+                  <input placeholder="For example, 1200 sq. ft." />
+                </label>
+                <label>
+                  Budget range
+                  <select defaultValue="">
+                    <option value="" disabled>
+                      Select one
+                    </option>
+                    <option>Under ₹2 Lakh</option>
+                    <option>₹2–5 Lakh</option>
+                    <option>₹5–10 Lakh</option>
+                    <option>₹10–20 Lakh</option>
+                    <option>₹20 Lakh+</option>
+                  </select>
+                </label>
+                <label>
+                  Preferred timeline
+                  <select defaultValue="">
+                    <option value="" disabled>
+                      Select one
+                    </option>
+                    <option>Within 1 month</option>
+                    <option>1–3 months</option>
+                    <option>3–6 months</option>
+                    <option>Just exploring</option>
+                  </select>
+                </label>
+                <label className="full">
+                  Additional requirements
+                  <textarea
+                    placeholder="Tell us about the room, your needs and what you have in mind."
+                    rows="4"
+                  ></textarea>
+                </label>
+                <label className="upload full">
+                  <span>Upload floor plan / reference image</span>
+                  <input type="file" accept="image/*,.pdf" />
+                  <small>PDF, JPG or PNG · Max 10 MB</small>
+                </label>
+              </div>
+              <button className="button button-dark" type="submit">
+                Request a Consultation <ArrowUpRight size={16} />
+              </button>
+            </>
+          )}
+        </form>
+      </section>
+    </main>
+  );
+}
 
-function App() { const [path, setPath] = useState(window.location.pathname); useEffect(() => { const update = () => setPath(window.location.pathname); window.addEventListener('popstate', update); return () => window.removeEventListener('popstate', update) }, []); useEffect(() => { const meta = { '/': ['SENSE — Modular Kitchen & Wardrobe', 'Premium modular kitchens, wardrobes and customized furniture for considered residential interiors.'], '/kitchens': ['Modular Kitchens — SENSE', 'Kitchens planned around your space, routines, materials and storage needs.'], '/wardrobes': ['Wardrobes — SENSE', 'Quiet, capable wardrobe storage designed around your room and daily routines.'], '/custom-furniture': ['Custom Furniture — SENSE', 'Built-in furniture and storage solutions made for the rooms they belong to.'], '/projects': ['Projects — SENSE', 'A selection of kitchens, wardrobes and custom furniture by SENSE.'], '/about': ['About SENSE', 'Designing kitchens, wardrobes and furniture for real spaces and real routines.'], '/contact': ['Contact SENSE', 'Start a conversation about your kitchen, wardrobe or customized furniture project.'] }[path] || ['Project Detail — SENSE', 'A SENSE residential interior project.']; document.title = meta[0]; let description = document.querySelector('meta[name="description"]'); if (!description) { description = document.createElement('meta'); description.name = 'description'; document.head.appendChild(description) } description.content = meta[1] }, [path]); let page; if (path === '/') page = <Home />; else if (path === '/kitchens') page = <ListingPage kind="kitchens" />; else if (path === '/wardrobes') page = <ListingPage kind="wardrobes" />; else if (path === '/custom-furniture') page = <ListingPage kind="custom" />; else if (path === '/projects') page = <ProjectsPage />; else if (path.startsWith('/projects/')) page = <ProjectDetail />; else if (path === '/about') page = <About />; else if (path === '/contact') page = <Contact />; else page = <Home />; return <><Header />{page}<Footer /><MobileBar /></> }
+function App() {
+  const [path, setPath] = useState(window.location.pathname);
+  useEffect(() => {
+    const update = () => setPath(window.location.pathname);
+    window.addEventListener("popstate", update);
+    return () => window.removeEventListener("popstate", update);
+  }, []);
+  useEffect(() => {
+    const meta = {
+      "/": [
+        "SENSE Modular Kitchen & Wardrobe | Kitchens, Wardrobes & Custom Furniture",
+        "Premium modular kitchens, wardrobes and customized furniture for considered residential interiors.",
+      ],
+      "/kitchens": [
+        "Modular Kitchens | SENSE",
+        "Kitchens planned around your space, routines, materials and storage needs.",
+      ],
+      "/wardrobes": [
+        "Modular Wardrobes | SENSE",
+        "Quiet, capable wardrobe storage designed around your room and daily routines.",
+      ],
+      "/custom-furniture": [
+        "Customized Furniture | SENSE",
+        "Built-in furniture and storage solutions made for the rooms they belong to.",
+      ],
+      "/projects": [
+        "Interior Projects | SENSE Modular Kitchen & Wardrobe",
+        "A selection of kitchens, wardrobes and custom furniture by SENSE.",
+      ],
+      "/about": [
+        "About SENSE",
+        "Designing kitchens, wardrobes and furniture for real spaces and real routines.",
+      ],
+      "/contact": [
+        "Get a Quote | SENSE Modular Kitchen & Wardrobe",
+        "Start a conversation about your kitchen, wardrobe or customized furniture project.",
+      ],
+    }[path] || [
+      "Project Detail — SENSE",
+      "A SENSE residential interior project.",
+    ];
+    document.title = meta[0];
+    let description = document.querySelector('meta[name="description"]');
+    if (!description) {
+      description = document.createElement("meta");
+      description.name = "description";
+      document.head.appendChild(description);
+    }
+    description.content = meta[1];
+    const canonicalUrl = `${window.location.origin}${path === "/" ? "/" : path}`;
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = canonicalUrl;
+    const socialTags = {
+      "og:title": meta[0],
+      "og:description": meta[1],
+      "og:type": "website",
+      "og:url": canonicalUrl,
+      "twitter:card": "summary_large_image",
+      "twitter:title": meta[0],
+      "twitter:description": meta[1],
+    };
+    Object.entries(socialTags).forEach(([property, content]) => {
+      const selector = property.startsWith("twitter:")
+        ? `meta[name="${property}"]`
+        : `meta[property="${property}"]`;
+      let tag = document.querySelector(selector);
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute(property.startsWith("twitter:") ? "name" : "property", property);
+        document.head.appendChild(tag);
+      }
+      tag.content = content;
+    });
+  }, [path]);
+  let page;
+  if (path === "/") page = <Home />;
+  else if (path === "/kitchens") page = <ListingPage kind="kitchens" />;
+  else if (path === "/wardrobes") page = <ListingPage kind="wardrobes" />;
+  else if (path === "/custom-furniture") page = <ListingPage kind="custom" />;
+  else if (path === "/projects") page = <ProjectsPage />;
+  else if (path.startsWith("/projects/")) page = <ProjectDetail />;
+  else if (path === "/about") page = <About />;
+  else if (path === "/contact") page = <Contact />;
+  else page = <Home />;
+  return (
+    <>
+      <Header />
+      {page}
+      <Footer />
+      <MobileBar />
+    </>
+  );
+}
 
-createRoot(document.getElementById('root')).render(<App />)
+createRoot(document.getElementById("root")).render(<App />);
