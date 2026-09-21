@@ -7,6 +7,15 @@
 @media(max-width:600px){
 	body{padding-bottom:74px}
 	h1,h2,h3,p{overflow-wrap:break-word}
+	.hero-overlay{width:100%;max-width:none;min-width:0}
+	.hero-overlay>*{width:100%;min-width:0}
+	.hero-kicker{white-space:normal}
+	.hero h1{max-width:100%;word-break:normal}
+	.hero-overlay p{max-width:100%}
+	.hero-actions{min-width:0}
+	.hero-actions .button{min-width:0;white-space:normal}
+	.hero-caption{min-width:0}
+	.hero-caption span{min-width:0;overflow-wrap:break-word}
 	.page-hero h1,.detail-hero h1,.contact-intro h1{font-size:clamp(40px,12vw,52px);line-height:1.04}
 	.option-grid,.option-grid.four{grid-template-columns:1fr;gap:44px 0}
 	.option-card .image-tile{height:300px}
